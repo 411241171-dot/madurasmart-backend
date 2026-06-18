@@ -32,7 +32,17 @@ const UserSchema = new mongoose.Schema({
 });
 
 const User = mongoose.models.User || mongoose.model("User", UserSchema);
+const StokSchema = new mongoose.Schema({
+  username: String,
+  tanggal: String,
+  kode: String,
+  namaBarang: String,
+  harga: Number,
+  jumlah: Number,
+  profit: Number
+});
 
+const Stok = mongoose.models.Stok || mongoose.model("Stok", StokSchema);
 // REGISTER
 app.post("/api/register", async (req, res) => {
   try {
@@ -98,7 +108,33 @@ app.post("/api/login", async (req, res) => {
     });
   }
 });
+app.get("/api/stok/:username", async (req, res) => {
+  const stok = await Stok.find({ username: req.params.username });
+  res.json(stok);
+});
 
+app.post("/api/stok", async (req, res) => {
+  try {
+    const { username, tanggal, kode, namaBarang, harga, jumlah, profit } = req.body;
+
+    const barangAda = await Stok.findOne({ username, kode });
+
+    if (barangAda) {
+      barangAda.jumlah += jumlah;
+      barangAda.harga = harga;
+      barangAda.profit += profit;
+      barangAda.tanggal = tanggal;
+      barangAda.namaBarang = namaBarang;
+      await barangAda.save();
+    } else {
+      await Stok.create({ username, tanggal, kode, namaBarang, harga, jumlah, profit });
+    }
+
+    res.json({ success: true, message: "Stok berhasil disimpan ke database." });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
 // Untuk jalan lokal di laptop
 if (process.env.NODE_ENV !== "production") {
   const PORT = process.env.PORT || 3000;

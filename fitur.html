@@ -126,7 +126,7 @@
 let nama = localStorage.getItem("username");
 document.getElementById("namaUser").innerText = nama || "Pengguna";
 
-let stokBarang = JSON.parse(localStorage.getItem("stokBarang")) || [];
+let stokBarang = [];
 let transaksi = JSON.parse(localStorage.getItem("transaksi")) || [];
 let hutang = JSON.parse(localStorage.getItem("hutang")) || [];
 
@@ -172,7 +172,8 @@ function tutupInputBarang() {
   document.getElementById("popupInputBarang").style.display = "none";
 }
 function simpanStokBaru() {
-  let tanggal = new Date().toISOString().slice(0,10);
+  let username = localStorage.getItem("username");
+  let tanggal = new Date().toISOString().slice(0, 10);
 
   let kode = document.getElementById("kodeBarang").value;
   let namaBarang = document.getElementById("namaBarang").value;
@@ -180,48 +181,49 @@ function simpanStokBaru() {
   let jumlah = parseInt(document.getElementById("jumlahBarang").value);
   let profit = parseInt(document.getElementById("profitBarang").value);
 
+  if (!username) {
+    tampilPopup("Gagal!", "Silakan login terlebih dahulu.");
+    return;
+  }
+
   if (!kode || !namaBarang || isNaN(harga) || isNaN(jumlah) || isNaN(profit)) {
     tampilPopup("Gagal!", "Data stok tidak boleh kosong.");
     return;
   }
 
-  let barangAda = stokBarang.find(item => item.kode.toLowerCase() === kode.toLowerCase());
+  fetch("https://madurasmart-backend.vercel.app/api/stok", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      username,
+      tanggal,
+      kode,
+      namaBarang,
+      harga,
+      jumlah,
+      profit
+    })
+  })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        document.getElementById("kodeBarang").value = "";
+        document.getElementById("namaBarang").value = "";
+        document.getElementById("hargaBarang").value = "";
+        document.getElementById("jumlahBarang").value = "";
+        document.getElementById("profitBarang").value = "";
 
-if (barangAda) {
-  barangAda.jumlah += jumlah;
-  barangAda.harga = harga;
-  barangAda.profit += profit;
-  barangAda.tanggal = tanggal;
-  barangAda.namaBarang = namaBarang;
-} else {
-  stokBarang.push({
-    tanggal,
-    kode,
-    namaBarang,
-    harga,
-    jumlah,
-    profit
-  });
-}
-tambahLogAktivitas(
-  "fa-solid fa-cube",
-  "log-green",
-  "Stok " + namaBarang + " ditambah +" + jumlah,
-  "Oleh " + (localStorage.getItem("username") || "Pengguna")
-);
-
-simpanData();
-tampilStok();
-
-document.getElementById("kodeBarang").value = "";
-document.getElementById("namaBarang").value = "";
-document.getElementById("hargaBarang").value = "";
-document.getElementById("jumlahBarang").value = "";
-document.getElementById("profitBarang").value = "";
-
-tutupInputBarang();
-
-tampilPopup("Berhasil!", "Stok berhasil ditambahkan.");
+        tutupInputBarang();
+        tampilPopup("Berhasil!", data.message);
+        loadStok();
+      } else {
+        tampilPopup("Gagal!", data.message);
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      tampilPopup("Gagal!", "Tidak bisa terhubung ke server.");
+    });
 }
 function tutupInputTransaksi() {
   document.getElementById("popupInputTransaksi").style.display = "none";
@@ -525,8 +527,8 @@ function tutupPopup() {
 }
 
 function logout() {
-  localStorage.clear();
-  window.location.href = "index.html";
+  localStorage.removeItem("username");
+  window.location.href = "login.html";
 }
 function bukaPopupLogout() {
   document.getElementById("popupLogout").style.display = "flex";
@@ -537,8 +539,8 @@ function tutupPopupLogout() {
 }
 
 function konfirmasiLogout() {
-  localStorage.clear();
-  window.location.href = "index.html";
+  localStorage.removeItem("username");
+  window.location.href = "login.html";
 }
 </script>
 <div id="popupCustom" class="popup-overlay" style="display:none;">
