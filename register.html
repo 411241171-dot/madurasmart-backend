@@ -45,7 +45,7 @@ function register() {
   }
 
   // UBAH JADI /api/register !
-fetch('http://localhost:3000/api/register', {
+fetch('https://madurasmart-backend.vercel.app/api/register', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username: usernameInput, password: passwordInput })
