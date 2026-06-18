@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login MaduraSmart</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="login-body">
+
+<div class="login-brand">
+  <img src="logo.jpeg" class="logo">
+  <div>
+    <h1>MaduraSmart</h1>
+    <p>Catatan Warung Lebih Rapih</p>
+  </div>
+</div>
+
+<div class="login-box">
+  <h2>Registrasi Akun Baru</h2>
+
+  <label>Buat Username / Nomor HP</label>
+  <input type="text" id="reg_username" placeholder="Masukkan nama warung baru . . .">
+
+  <label>Buat Password</label>
+  <input type="password" id="reg_password" placeholder="Masukkan password . . .">
+  <p id="warningText" class="warning-text"></p>
+  
+  <div class="login-button-group">
+    <a href="#" onclick="register()">Daftar Sekarang</a>
+    <a href="login.html">Sudah Ada Akun? Login</a>
+  </div>
+</div>
+
+<script>
+// FUNGSI DAFTAR AKUN (REGISTER) - SEKARANG TEMBAK KE NODE.JS
+function register() {
+  document.getElementById("warningText").innerText = "";
+  let usernameInput = document.getElementById("reg_username").value.trim();
+  let passwordInput = document.getElementById("reg_password").value;
+
+  if (usernameInput === "" || passwordInput === "") {
+    document.getElementById("warningText").innerText = "Username dan password wajib diisi!";
+    return;
+  }
+
+  // UBAH JADI /api/register !
+fetch('http://localhost:3000/api/register', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username: usernameInput, password: passwordInput })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      tampilPopup("Berhasil!", "Hore! Akun " + usernameInput + " sukses dibuat.");
+    } else {
+      document.getElementById("warningText").innerText = data.message;
+    }
+  })
+  .catch(err => {
+    document.getElementById("warningText").innerText = "Waduh, gagal terhubung ke server Node.js!";
+    console.error(err);
+  });
+}
+
+// FUNGSI POPUP UTUH BAWAAN KAMU
+function tampilPopup(judul, pesan) {
+  document.getElementById("popupTitle").innerText = judul;
+  document.getElementById("popupMessage").innerText = pesan;
+  document.getElementById("popupCustom").style.display = "flex";
+}
+
+function tutupPopup() {
+  document.getElementById("popupCustom").style.display = "none";
+
+  if (document.getElementById("popupTitle").innerText === "Berhasil!") {
+    window.location.href = "login.html"; 
+  }
+}
+</script>
+<div id="popupCustom" class="popup-overlay" style="display:none;">
+  <div class="popup-box">
+    <h3 id="popupTitle">Info</h3>
+    <p id="popupMessage">Pesan</p>
+    <button onclick="tutupPopup()">OK</button>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Profil - MaduraSmart</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+  <div class="app">
+
+    <aside class="sidebar">
+  <a href="dashboard.html" class="menu">🏠 Dashboard</a>
+  <a href="fitur.html" class="menu">📦 Fitur Utama</a>
+  <a href="laporan.html" class="menu">📊 Laporan / Output</a>
+  <a href="profil.html" class="menu active">👤 Profil / Riwayat</a>
+  <a href="#" class="menu" onclick="bukaPopupLogout()">↪ Quit</a>
+</aside>
+
+
+    <!-- MAIN -->
+    <main class="main">
+
+      <div class="topbar">
+  <div class="brand">
+    <img src="logo.jpeg" class="logo">
+    <div>
+      <h1>MaduraSmart</h1>
+      <p>Catatan Warung Lebih Rapih</p>
+    </div>
+  </div>
+
+  <div class="user" onclick="window.location.href='profil.html'">
+  🔔 👨‍💼 <b id="namaUser"></b>
+</div>
+</div>
+      <!-- PROFILE CARD -->
+      <section class="profile-card">
+
+        <div class="profile-header">
+
+          <div class="profile-title">
+
+            <i class="fa-solid fa-user"></i>
+
+            <h2>Profil Warung</h2>
+
+          </div>
+
+          <button class="edit-btn" onclick="editProfil()">
+
+            <i class="fa-solid fa-pen"></i>
+
+            Edit Profil
+
+          </button>
+
+        </div>
+
+        <div class="profile-content">
+
+          <img src="logo.jpeg" class="profile-logo">
+
+          <div class="profile-info">
+
+            <div class="info-row">
+              <span>Nama Warung</span>
+              <p id="namaWarung">MaduraSmart Store</p>
+            </div>
+
+            <div class="info-row">
+              <span>Nama Pemilik</span>
+              <p id="namaPemilik">Pengguna</p>
+            </div>
+
+            <div class="info-row">
+              <span>Alamat</span>
+              <p id="alamatWarung">Jl. Melati No.12, Pamekasan, Jawa Timur</p>
+            </div>
+
+            <div class="info-row">
+              <span>No. Telepon</span>
+              <p id="teleponWarung">0812-3456-7890</p>
+            </div>
+
+            <div class="info-row">
+              <span>Bergabung Sejak</span>
+              <p id="tanggalGabung"></p>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- CONTENT -->
+      <section class="profile-grid">
+
+        <!-- PENGATURAN -->
+        <div class="setting-card">
+
+          <div class="card-title">
+
+            <i class="fa-solid fa-gear"></i>
+
+            <h2>Pengaturan</h2>
+
+          </div>
+
+          <div class="setting-item" onclick="gantiPassword()">
+
+            <i class="fa-solid fa-lock"></i>
+
+            <div>
+              <h4>Ganti Password</h4>
+              <p>Ubah password akun Anda</p>
+            </div>
+
+          </div>
+
+          <div class="setting-item" onclick="hubungiAdmin()">
+
+            <i class="fa-solid fa-phone"></i>
+
+            <div>
+              <h4>Hubungi Admin (CS)</h4>
+              <p>Chat admin melalui Whatsapp</p>
+            </div>
+
+          </div>
+
+          <div class="setting-item" onclick="bukaPopupLogout()">
+
+  <i class="fa-solid fa-right-from-bracket"></i>
+
+            <div>
+              <h4>Logout</h4>
+              <p>Keluar dari akun ini</p>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- LOG -->
+        <div class="log-card">
+
+          <div class="log-header">
+
+            <div class="card-title">
+
+              <i class="fa-regular fa-clock"></i>
+
+              <h2>Log Aktivitas</h2>
+
+            </div>
+
+            <button class="lihat-btn" onclick="toggleLog()">
+  Lihat Semua
+</button>
+
+          </div>
+
+          <div id="containerLogAktivitas">
+
+  <div class="log-item">
+    <p>Belum ada aktivitas</p>
+  </div>
+
+</div>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+<script>
+let nama = localStorage.getItem("username");
+
+document.getElementById("namaUser").innerText =
+  nama || "Pengguna";
+
+document.getElementById("namaPemilik").innerText =
+  nama || "Pengguna";
+  if (!localStorage.getItem("tanggalGabung")) {
+
+  let hariIni = new Date();
+
+  let tanggal = hariIni.toLocaleDateString("id-ID", {
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  });
+
+  localStorage.setItem("tanggalGabung", tanggal);
+}
+
+document.getElementById("tanggalGabung").innerText =
+  localStorage.getItem("tanggalGabung");
+document.getElementById("namaWarung").innerText =
+  localStorage.getItem("namaWarung") || "MaduraSmart Store";
+  document.getElementById("alamatWarung").innerText =
+  localStorage.getItem("alamatWarung") || "-";
+
+document.getElementById("teleponWarung").innerText =
+  localStorage.getItem("teleponWarung") || "-";
+let riwayatAktivitas =
+  JSON.parse(localStorage.getItem("riwayatAktivitas")) || [];
+
+let tampilSemuaLog = false;
+
+function tampilkanLogAktivitas() {
+
+  let container =
+    document.getElementById("containerLogAktivitas");
+
+  if (riwayatAktivitas.length === 0) {
+
+    container.innerHTML = `
+      <div class="log-item">
+        <p>Belum ada aktivitas</p>
+      </div>
+    `;
+
+    return;
+  }
+
+  container.innerHTML = "";
+
+  let dataLog = tampilSemuaLog
+    ? riwayatAktivitas
+    : riwayatAktivitas.slice(0, 7);
+
+  dataLog.forEach(item => {
+
+    container.innerHTML += `
+      <div class="log-item">
+
+        <i class="${item.icon} ${item.warna}"></i>
+
+        <div class="log-text">
+          <h4>${item.judul}</h4>
+          <p>${item.deskripsi}</p>
+        </div>
+
+        <div class="log-date">
+          <strong>${item.tanggal}</strong>
+          <p>${item.jam}</p>
+        </div>
+
+      </div>
+    `;
+
+  });
+
+}
+
+tampilkanLogAktivitas();
+function editProfil() {
+  document.getElementById("editNamaWarung").value =
+    document.getElementById("namaWarung").innerText;
+
+  document.getElementById("editAlamatWarung").value =
+    document.getElementById("alamatWarung").innerText;
+
+  document.getElementById("editTeleponWarung").value =
+    document.getElementById("teleponWarung").innerText;
+
+  document.getElementById("popupEditProfil").style.display = "flex";
+}
+function tutupEditProfil() {
+  document.getElementById("popupEditProfil").style.display = "none";
+}
+
+function simpanProfil() {
+
+  let namaBaru =
+    document.getElementById("editNamaWarung").value;
+
+  let alamatBaru =
+    document.getElementById("editAlamatWarung").value;
+
+  let teleponBaru =
+    document.getElementById("editTeleponWarung").value;
+
+  if (!namaBaru) {
+    tampilPopup("Gagal!", "Nama warung tidak boleh kosong.");
+    return;
+  }
+
+  document.getElementById("namaWarung").innerText = namaBaru;
+  document.getElementById("alamatWarung").innerText = alamatBaru || "-";
+  document.getElementById("teleponWarung").innerText = teleponBaru || "-";
+
+  localStorage.setItem("namaWarung", namaBaru);
+  localStorage.setItem("alamatWarung", alamatBaru);
+  localStorage.setItem("teleponWarung", teleponBaru);
+
+  tutupEditProfil();
+
+  tampilPopup("Berhasil!", "Profil berhasil diperbarui.");
+}
+function gantiPassword() {
+  document.getElementById("popupPassword").style.display = "flex";
+}
+function tutupPopupPassword() {
+  document.getElementById("popupPassword").style.display = "none";
+}
+
+function simpanPasswordBaru() {
+
+  let passwordBaru =
+    document.getElementById("passwordBaru").value;
+
+  if (!passwordBaru) {
+    tampilPopup("Gagal!", "Password tidak boleh kosong.");
+    return;
+  }
+
+  localStorage.setItem("password", passwordBaru);
+
+  document.getElementById("passwordBaru").value = "";
+
+  tutupPopupPassword();
+
+  tampilPopup("Berhasil!", "Password berhasil diganti!");
+}
+function hubungiAdmin() {
+  window.open(
+    "https://wa.me/6281234567890?text=Halo%20Admin%20MaduraSmart",
+    "_blank"
+  );
+}
+
+function toggleLog() {
+  tampilSemuaLog = !tampilSemuaLog;
+  tampilkanLogAktivitas();
+}
+function logout() {
+  localStorage.clear();
+  window.location.href = "index.html";
+}
+function bukaPopupLogout() {
+  document.getElementById("popupLogout").style.display = "flex";
+}
+
+function tutupPopupLogout() {
+  document.getElementById("popupLogout").style.display = "none";
+}
+
+function konfirmasiLogout() {
+  localStorage.clear();
+  window.location.href = "index.html";
+}
+function tampilPopup(judul, pesan) {
+  document.getElementById("popupTitle").innerText = judul;
+  document.getElementById("popupMessage").innerText = pesan;
+  document.getElementById("popupCustom").style.display = "flex";
+}
+
+function tutupPopup() {
+  document.getElementById("popupCustom").style.display = "none";
+}
+</script>
+<div id="popupCustom" class="popup-overlay" style="display:none;">
+  <div class="popup-box">
+    <h3 id="popupTitle">Berhasil!</h3>
+    <p id="popupMessage">Data berhasil disimpan.</p>
+    <button onclick="tutupPopup()">OK</button>
+  </div>
+</div>
+<div id="popupLogout" class="popup-overlay" style="display:none;">
+  <div class="popup-box">
+    <h3>Konfirmasi Keluar</h3>
+    <p>Yakin mau keluar dari aplikasi?</p>
+
+    <button onclick="konfirmasiLogout()">OK</button>
+    <button onclick="tutupPopupLogout()">Cancel</button>
+  </div>
+</div>
+<div id="popupEditProfil" class="popup-overlay" style="display:none;">
+  <div class="popup-box">
+
+    <h3>Edit Profil</h3>
+
+    <input type="text"
+           id="editNamaWarung"
+           placeholder="Nama Warung">
+
+    <input type="text"
+           id="editAlamatWarung"
+           placeholder="Alamat">
+
+    <input type="text"
+           id="editTeleponWarung"
+           placeholder="Nomor Telepon">
+
+    <button onclick="simpanProfil()">Simpan</button>
+    <button onclick="tutupEditProfil()">Batal</button>
+
+  </div>
+</div>
+<div id="popupPassword"
+     class="popup-overlay"
+     style="display:none;">
+
+  <div class="popup-box">
+
+    <h3>Ganti Password</h3>
+
+    <input type="password"
+           id="passwordBaru"
+           placeholder="Masukkan password baru">
+
+    <button onclick="simpanPasswordBaru()">
+      Simpan
+    </button>
+
+    <button onclick="tutupPopupPassword()">
+      Batal
+    </button>
+
+  </div>
+
+</div>
+</body>
+</html>

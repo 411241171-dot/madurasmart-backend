@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Laporan - MaduraSmart</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body class="laporan-body">
+
+  <div class="app">
+
+
+      <!-- SIDEBAR -->
+<aside class="sidebar">
+  <a href="dashboard.html" class="menu">🏠 Dashboard</a>
+  <a href="fitur.html" class="menu">📦 Fitur Utama</a>
+  <a href="laporan.html" class="menu active">📊 Laporan / Output</a>
+  <a href="profil.html" class="menu">👤 Profil / Riwayat</a>
+  <a href="#" class="menu" onclick="bukaPopupLogout()">↪ Quit</a>
+</aside>
+
+    <!-- MAIN -->
+    <main class="main">
+
+      <!-- TOPBAR -->
+      <div class="topbar">
+  <div class="brand">
+    <img src="logo.jpeg" class="logo">
+    <div>
+      <h1>MaduraSmart</h1>
+      <p>Catatan Warung Lebih Rapih</p>
+    </div>
+  </div>
+
+  <a href="profil.html" class="user">
+  🔔 👨‍💼 <b id="namaUser"></b>
+</a>
+</div>
+
+      <!-- TITLE -->
+      <section class="title-section">
+
+        <div class="title-text">
+
+          <h1>Ringkasan Laba / Rugi</h1>
+
+          <p>
+            Ringkasan Keuangan bersih dari usaha warung Anda
+          </p>
+
+        </div>
+
+        <div class="filter-buttons">
+
+          <button onclick="filterLaporan('hari')">Hari Ini</button>
+
+<button class="active-btn" onclick="filterLaporan('bulan')">
+  Bulan Ini
+</button>
+
+<button onclick="filterLaporan('semua')">
+  Semua Data
+  <i class="fa-regular fa-calendar"></i>
+</button>
+
+        </div>
+
+      </section>
+
+      <!-- DOWNLOAD -->
+      <div class="download-section">
+
+        <button class="download-btn" onclick="downloadPDF()">
+
+          <i class="fa-solid fa-file-pdf"></i>
+
+          Unduh Laporan PDF
+
+        </button>
+
+      </div>
+
+      <!-- CARDS -->
+      <section class="cards">
+
+        <div class="info-card pemasukan">
+
+          <h3>Total Pemasukan</h3>
+
+          <h2 id="laporanPemasukan">Rp 0</h2>
+
+          <p>Berdasarkan transaksi tersimpan</p>
+
+        </div>
+
+        <div class="info-card pengeluaran">
+
+          <h3>Total Pengeluaran</h3>
+
+          <h2 id="laporanPengeluaran">Rp 0</h2>
+
+          <p>Berdasarkan data stok & transaksi</p>
+
+        </div>
+
+        <div class="info-card laba-kotor">
+
+          <h3>Laba Kotor</h3>
+
+          <h2 id="laporanLabaKotor">Rp 0</h2>
+
+          <p>Pemasukan - Pengeluaran</p>
+
+        </div>
+
+        <div class="info-card laba-bersih">
+
+          <h3>Laba Bersih</h3>
+
+          <h2 id="laporanLabaBersih">Rp 0</h2>
+
+          <p>Setelah biaya lain-lain</p>
+
+        </div>
+
+      </section>
+
+      <!-- TABLE -->
+      <section class="table-section">
+
+        <div class="table-header">
+
+          <div>
+
+            <h2>Riwayat Transaksi</h2>
+
+            <p>
+              Daftar penjualan yang terjadi pada periode yang dipilih.
+            </p>
+
+          </div>
+
+          <div class="table-actions">
+
+            <!-- SEARCH -->
+            <div class="search-box">
+
+              <i class="fa-solid fa-magnifying-glass"></i>
+
+              <input
+type="text"
+id="searchLaporan"
+onkeyup="tampilLaporan()"
+placeholder="Cari produk atau pelanggan">
+
+            </div>
+
+            <!-- FILTER -->
+            <button class="filter-btn" onclick="resetSearch()">
+  <i class="fa-solid fa-rotate-right"></i>
+  Reset
+</button>
+
+          </div>
+
+        </div>
+
+        <!-- TABLE -->
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>No</th>
+
+              <th>Waktu</th>
+
+              <th>Nama Pelanggan</th>
+
+              <th>Produk</th>
+
+              <th>Jumlah</th>
+
+              <th>Harga Satuan</th>
+
+              <th>Total</th>
+
+            </tr>
+
+          </thead>
+
+          <tbody id="tabelLaporan">
+  <tr>
+    <td colspan="7">Belum ada transaksi</td>
+  </tr>
+</tbody>
+
+        </table>
+
+
+      </section>
+
+    </main>
+
+  </div>
+<script>
+let nama = localStorage.getItem("username");
+document.getElementById("namaUser").innerText = nama || "Pengguna";
+let transaksi = JSON.parse(localStorage.getItem("transaksi")) || [];
+
+let modeFilter = "bulan";
+
+function formatRupiah(angka) {
+  return "Rp " + angka.toLocaleString("id-ID");
+}
+
+function ambilTanggalHariIni() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function filterLaporan(mode) {
+  modeFilter = mode;
+
+  let buttons = document.querySelectorAll(".filter-buttons button");
+  buttons.forEach(btn => btn.classList.remove("active-btn"));
+
+  if (mode === "hari") {
+    buttons[0].classList.add("active-btn");
+  } else if (mode === "bulan") {
+    buttons[1].classList.add("active-btn");
+  } else {
+    buttons[2].classList.add("active-btn");
+  }
+
+  tampilLaporan();
+}
+function tampilPopup(judul, pesan) {
+  document.getElementById("popupTitle").innerText = judul;
+  document.getElementById("popupMessage").innerText = pesan;
+  document.getElementById("popupCustom").style.display = "flex";
+}
+
+function tutupPopup() {
+  document.getElementById("popupCustom").style.display = "none";
+
+  if (document.getElementById("popupTitle").innerText === "Info PDF") {
+    window.print();
+  }
+}
+function tampilLaporan() {
+  let tabel = document.getElementById("tabelLaporan");
+  let keyword = document.getElementById("searchLaporan").value.toLowerCase();
+
+  let hariIni = ambilTanggalHariIni();
+  let bulanIni = hariIni.slice(0, 7);
+
+  let hasil = transaksi.filter(item => {
+    let tanggal = item.tanggal || hariIni;
+
+    if (modeFilter === "hari") {
+      return tanggal === hariIni;
+    }
+
+    if (modeFilter === "bulan") {
+      return tanggal.slice(0, 7) === bulanIni;
+    }
+
+    return true;
+  });
+
+  hasil = hasil.filter(item =>
+    item.namaBarang.toLowerCase().includes(keyword) ||
+    item.keterangan.toLowerCase().includes(keyword)
+  );
+
+  if (hasil.length === 0) {
+    tabel.innerHTML = `
+      <tr>
+        <td colspan="7">Belum ada transaksi</td>
+      </tr>
+    `;
+  } else {
+    tabel.innerHTML = "";
+
+    hasil.forEach((item, index) => {
+      tabel.innerHTML += `
+        <tr>
+          <td>${index + 1}</td>
+          <td>${item.tanggal || "-"}</td>
+          <td>${item.pelanggan || "-"}</td>
+          <td>${item.produk || item.namaBarang}</td>
+          <td>${item.jumlah || "-"}</td>
+          <td>${item.hargaSatuan ? formatRupiah(item.hargaSatuan) : "-"}</td>
+          <td>${formatRupiah(item.total)}</td>
+        </tr>
+      `;
+    });
+  }
+
+  hitungRingkasan(hasil);
+}
+
+function hitungRingkasan(data) {
+  let pemasukan = 0;
+  let piutang = 0;
+
+  data.forEach(item => {
+    if (item.status === "Lunas") {
+      pemasukan += item.total;
+    } else {
+      piutang += item.total;
+    }
+  });
+
+  let pengeluaran = Math.round(pemasukan * 0.65);
+  let labaKotor = pemasukan - pengeluaran;
+  let labaBersih = Math.round(labaKotor * 0.8);
+
+  document.getElementById("laporanPemasukan").innerText = formatRupiah(pemasukan);
+  document.getElementById("laporanPengeluaran").innerText = formatRupiah(pengeluaran);
+  document.getElementById("laporanLabaKotor").innerText = formatRupiah(labaKotor);
+  document.getElementById("laporanLabaBersih").innerText = formatRupiah(labaBersih);
+}
+
+function downloadPDF() {
+  tampilPopup("Info PDF", "Pilih Save as PDF setelah halaman print terbuka.");
+}
+function logout() {
+  localStorage.clear();
+  window.location.href = "index.html";
+}
+function bukaPopupLogout() {
+  document.getElementById("popupLogout").style.display = "flex";
+}
+
+function tutupPopupLogout() {
+  document.getElementById("popupLogout").style.display = "none";
+}
+
+function konfirmasiLogout() {
+  localStorage.clear();
+  window.location.href = "index.html";
+}
+function resetSearch() {
+  document.getElementById("searchLaporan").value = "";
+  modeFilter = "bulan";
+
+  let buttons = document.querySelectorAll(".filter-buttons button");
+  buttons.forEach(btn => btn.classList.remove("active-btn"));
+  buttons[1].classList.add("active-btn");
+
+  tampilLaporan();
+}
+tampilLaporan();
+</script>
+<div id="popupLogout" class="popup-overlay" style="display:none;">
+  <div class="popup-box">
+    <h3>Konfirmasi Keluar</h3>
+    <p>Yakin mau keluar dari aplikasi?</p>
+
+    <button onclick="konfirmasiLogout()">OK</button>
+    <button onclick="tutupPopupLogout()">Cancel</button>
+  </div>
+</div>
+<div id="popupCustom" class="popup-overlay" style="display:none;">
+  <div class="popup-box">
+    <h3 id="popupTitle">Info</h3>
+    <p id="popupMessage">Pesan</p>
+    <button onclick="tutupPopup()">OK</button>
+  </div>
+</div>
+</body>
+</html>

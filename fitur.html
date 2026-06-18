@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Fitur Utama MaduraSmart</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+
+  <aside class="sidebar">
+    <a href="dashboard.html" class="menu">🏠 Dashboard</a>
+    <div class="menu active">📦 Fitur Utama</div>
+    <a href="laporan.html" class="menu">📊 Laporan / Output</a>
+    <a href="profil.html" class="menu">👤 Profil / Riwayat</a>
+    <a href="#" class="menu" onclick="bukaPopupLogout()">↪ Quit</a>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="brand">
+        <img src="logo.jpeg" class="logo">
+        <div>
+          <h1>MaduraSmart</h1>
+          <p>Catatan Warung Lebih Rapih</p>
+        </div>
+      </div>
+
+      <a href="profil.html" class="user">
+  🔔 👨‍💼 <b id="namaUser"></b>
+</a>
+    </header>
+
+    <section class="panel fitur-table">
+      <h2>Stok barang</h2>
+
+      <div class="table-action">
+        <button onclick="tambahStok()">✎ New Stock</button>
+        <input type="text" id="searchStok" onkeyup="tampilStok()" placeholder="🔍 Search Item">
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Date</th>
+            <th>ID Name</th>
+            <th>Price/pc</th>
+            <th>Total</th>
+            <th>Amount</th>
+            <th>Profit</th>
+            <th>Option</th>
+          </tr>
+        </thead>
+
+        <tbody id="tabelStok">
+          <tr>
+            <td colspan="8">Belum ada stok barang</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="page-btn">‹ 1 ›</div>
+    </section>
+
+    <section class="panel fitur-table">
+      <h2>Catatan Hutang</h2>
+
+      <div class="table-action">
+        <input type="text" id="searchHutang" onkeyup="tampilHutang()" placeholder="🔍 Search Item">
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Jatuh Tempo</th>
+            <th>Nama Pelanggan</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Option</th>
+          </tr>
+        </thead>
+
+        <tbody id="tabelHutang">
+          <tr>
+            <td colspan="6">Belum ada catatan hutang</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="page-btn">‹ 1 ›</div>
+    </section>
+<section class="panel fitur-table">
+  <h2>Transaksi Penjualan</h2>
+
+  <div class="table-action">
+    <button onclick="tambahTransaksi()">✎ New Transaction</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Nama Barang</th>
+        <th>Total</th>
+        <th>Keterangan</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+
+    <tbody id="tabelTransaksi">
+      <tr>
+        <td colspan="5">Belum ada transaksi</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="page-btn">‹ 1 ›</div>
+</section>
+  </main>
+</div>
+
+<script>
+let nama = localStorage.getItem("username");
+document.getElementById("namaUser").innerText = nama || "Pengguna";
+
+let stokBarang = JSON.parse(localStorage.getItem("stokBarang")) || [];
+let transaksi = JSON.parse(localStorage.getItem("transaksi")) || [];
+let hutang = JSON.parse(localStorage.getItem("hutang")) || [];
+
+function simpanData() {
+  localStorage.setItem("stokBarang", JSON.stringify(stokBarang));
+  localStorage.setItem("transaksi", JSON.stringify(transaksi));
+  localStorage.setItem("hutang", JSON.stringify(hutang));
+}
+let riwayatAktivitas =
+  JSON.parse(localStorage.getItem("riwayatAktivitas")) || [];
+
+function tambahLogAktivitas(icon, warna, judul, deskripsi) {
+
+  let waktu = new Date();
+
+  let tanggal =
+    waktu.toLocaleDateString("id-ID");
+
+  let jam =
+    waktu.toLocaleTimeString("id-ID", {
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+
+  riwayatAktivitas.unshift({
+    icon,
+    warna,
+    judul,
+    deskripsi,
+    tanggal,
+    jam
+  });
+
+  localStorage.setItem(
+    "riwayatAktivitas",
+    JSON.stringify(riwayatAktivitas)
+  );
+}
+function tambahStok() {
+  document.getElementById("popupInputBarang").style.display = "flex";
+}
+function tutupInputBarang() {
+  document.getElementById("popupInputBarang").style.display = "none";
+}
+function simpanStokBaru() {
+  let tanggal = new Date().toISOString().slice(0,10);
+
+  let kode = document.getElementById("kodeBarang").value;
+  let namaBarang = document.getElementById("namaBarang").value;
+  let harga = parseInt(document.getElementById("hargaBarang").value);
+  let jumlah = parseInt(document.getElementById("jumlahBarang").value);
+  let profit = parseInt(document.getElementById("profitBarang").value);
+
+  if (!kode || !namaBarang || isNaN(harga) || isNaN(jumlah) || isNaN(profit)) {
+    tampilPopup("Gagal!", "Data stok tidak boleh kosong.");
+    return;
+  }
+
+  let barangAda = stokBarang.find(item => item.kode.toLowerCase() === kode.toLowerCase());
+
+if (barangAda) {
+  barangAda.jumlah += jumlah;
+  barangAda.harga = harga;
+  barangAda.profit += profit;
+  barangAda.tanggal = tanggal;
+  barangAda.namaBarang = namaBarang;
+} else {
+  stokBarang.push({
+    tanggal,
+    kode,
+    namaBarang,
+    harga,
+    jumlah,
+    profit
+  });
+}
+tambahLogAktivitas(
+  "fa-solid fa-cube",
+  "log-green",
+  "Stok " + namaBarang + " ditambah +" + jumlah,
+  "Oleh " + (localStorage.getItem("username") || "Pengguna")
+);
+
+simpanData();
+tampilStok();
+
+document.getElementById("kodeBarang").value = "";
+document.getElementById("namaBarang").value = "";
+document.getElementById("hargaBarang").value = "";
+document.getElementById("jumlahBarang").value = "";
+document.getElementById("profitBarang").value = "";
+
+tutupInputBarang();
+
+tampilPopup("Berhasil!", "Stok berhasil ditambahkan.");
+}
+function tutupInputTransaksi() {
+  document.getElementById("popupInputTransaksi").style.display = "none";
+}
+
+function simpanTransaksiBaru() {
+  let kode = document.getElementById("kodeTransaksi").value;
+  let jumlahBeli = parseInt(document.getElementById("jumlahBeli").value);
+  let metodeBayar = document.getElementById("metodeBayar").value;
+
+  if (!kode || isNaN(jumlahBeli) || !metodeBayar) {
+    tampilPopup("Gagal!", "Data transaksi tidak boleh kosong.");
+    return;
+  }
+
+  let barang = stokBarang.find(item => item.kode.toLowerCase() === kode.toLowerCase());
+
+  if (!barang) {
+    tampilPopup("Gagal!", "Barang belum ada di stok.");
+    return;
+  }
+
+  if (barang.jumlah < jumlahBeli) {
+    tampilPopup("Gagal!", "Stok tidak cukup.");
+    return;
+  }
+
+  let totalBayar = barang.harga * jumlahBeli;
+  let status = "Lunas";
+  let keterangan = "Penjualan Tunai";
+  let namaPelanggan = "Pelanggan Umum";
+
+  if (metodeBayar.toLowerCase() === "hutang") {
+    namaPelanggan = document.getElementById("namaPelanggan").value;
+    let jatuhTempo = document.getElementById("jatuhTempo").value;
+
+    if (!namaPelanggan || !jatuhTempo) {
+      tampilPopup("Gagal!", "Nama pelanggan dan jatuh tempo wajib diisi untuk hutang.");
+      return;
+    }
+
+    status = "Belum Lunas";
+    keterangan = "Hutang - " + namaPelanggan;
+
+    hutang.push({
+      tanggal: jatuhTempo,
+      namaPelanggan,
+      produk: barang.namaBarang,
+      jumlah: jumlahBeli,
+      hargaSatuan: barang.harga,
+      namaBarang: barang.namaBarang + " x" + jumlahBeli,
+      total: totalBayar,
+      status
+    });
+  }
+
+  barang.jumlah -= jumlahBeli;
+
+  transaksi.push({
+    tanggal: new Date().toISOString().slice(0, 10),
+    pelanggan: namaPelanggan,
+    produk: barang.namaBarang,
+    jumlah: jumlahBeli,
+    hargaSatuan: barang.harga,
+    namaBarang: barang.namaBarang + " x" + jumlahBeli,
+    total: totalBayar,
+    keterangan,
+    status
+  });
+
+  simpanData();
+  tampilStok();
+  tampilHutang();
+  tampilTransaksi();
+
+  tutupInputTransaksi();
+  tampilPopup("Berhasil!", "Transaksi berhasil! Stok otomatis berkurang.");
+}
+
+function tampilStok() {
+  let tabel = document.getElementById("tabelStok");
+  let keyword = document.getElementById("searchStok").value.toLowerCase();
+
+  let hasil = stokBarang.filter(item =>
+    item.namaBarang.toLowerCase().includes(keyword) ||
+    item.kode.toLowerCase().includes(keyword)
+  );
+
+  if (hasil.length === 0) {
+    tabel.innerHTML = `<tr><td colspan="8">Belum ada stok barang</td></tr>`;
+    return;
+  }
+
+  tabel.innerHTML = "";
+
+  hasil.forEach((item, index) => {
+    let total = item.harga * item.jumlah;
+
+    tabel.innerHTML += `
+      <tr>
+        <td>${index + 1}.</td>
+        <td>${item.tanggal}</td>
+        <td>${item.namaBarang} (${item.kode})</td>
+        <td>IDR. ${item.harga.toLocaleString("id-ID")}</td>
+        <td>IDR. ${total.toLocaleString("id-ID")}</td>
+        <td>x${item.jumlah}</td>
+        <td>IDR. ${item.profit.toLocaleString("id-ID")}</td>
+        <td>
+          <span class="edit" onclick="editStok('${item.kode}')">Edit</span>
+          <span class="hapus" onclick="hapusStok('${item.kode}')">Hapus</span>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+function editStok(kode) {
+  let barang = stokBarang.find(item => item.kode === kode);
+
+  document.getElementById("editKodeBarang").value = barang.kode;
+  document.getElementById("editHargaBarang").value = barang.harga;
+  document.getElementById("editJumlahBarang").value = barang.jumlah;
+  document.getElementById("editProfitBarang").value = barang.profit;
+
+  document.getElementById("popupEditStok").style.display = "flex";
+}
+
+function tutupEditStok() {
+  document.getElementById("popupEditStok").style.display = "none";
+}
+
+function simpanEditStok() {
+  let kode = document.getElementById("editKodeBarang").value;
+  let barang = stokBarang.find(item => item.kode === kode);
+
+  let hargaBaru = parseInt(document.getElementById("editHargaBarang").value);
+  let jumlahBaru = parseInt(document.getElementById("editJumlahBarang").value);
+  let profitBaru = parseInt(document.getElementById("editProfitBarang").value);
+
+  if (isNaN(hargaBaru) || isNaN(jumlahBaru) || isNaN(profitBaru)) {
+    tampilPopup("Gagal!", "Data tidak valid.");
+    return;
+  }
+
+  barang.harga = hargaBaru;
+  barang.jumlah = jumlahBaru;
+  barang.profit = profitBaru;
+
+  tambahLogAktivitas(
+    "fa-solid fa-pen",
+    "log-yellow",
+    "Stok " + barang.namaBarang + " diedit",
+    "Jumlah baru: " + jumlahBaru
+  );
+
+  simpanData();
+  tampilStok();
+  tutupEditStok();
+
+  tampilPopup("Berhasil!", "Stok berhasil diedit.");
+}
+
+function hapusStok(kode) {
+  let barang = stokBarang.find(item => item.kode === kode);
+
+  document.getElementById("hapusKodeBarang").value = barang.kode;
+  document.getElementById("pesanHapusStok").innerText =
+    "Yakin mau hapus stok " + barang.namaBarang + "?";
+
+  document.getElementById("popupHapusStok").style.display = "flex";
+}
+
+function tutupHapusStok() {
+  document.getElementById("popupHapusStok").style.display = "none";
+}
+
+function konfirmasiHapusStok() {
+  let kode = document.getElementById("hapusKodeBarang").value;
+  let barang = stokBarang.find(item => item.kode === kode);
+
+  stokBarang = stokBarang.filter(item => item.kode !== kode);
+
+  tambahLogAktivitas(
+    "fa-solid fa-trash",
+    "log-yellow",
+    "Stok " + barang.namaBarang + " dihapus",
+    "Oleh " + (localStorage.getItem("username") || "Pengguna")
+  );
+
+  simpanData();
+  tampilStok();
+  tutupHapusStok();
+
+  tampilPopup("Berhasil!", "Stok berhasil dihapus.");
+}
+
+function tampilHutang() {
+  let tabel = document.getElementById("tabelHutang");
+  let keyword = document.getElementById("searchHutang").value.toLowerCase();
+
+  let hasil = hutang.filter(item =>
+    item.namaPelanggan.toLowerCase().includes(keyword) ||
+    item.status.toLowerCase().includes(keyword)
+  );
+
+  if (hasil.length === 0) {
+    tabel.innerHTML = `<tr><td colspan="6">Belum ada catatan hutang</td></tr>`;
+    return;
+  }
+
+  tabel.innerHTML = "";
+
+  hasil.forEach((item, index) => {
+    tabel.innerHTML += `
+      <tr>
+        <td>${index + 1}.</td>
+        <td>${item.tanggal}</td>
+        <td>${item.namaPelanggan}</td>
+        <td>IDR. ${item.total.toLocaleString("id-ID")}</td>
+        <td><span class="edit">${item.status}</span></td>
+        <td>
+          <span class="edit" onclick="lunasiHutang(${index})">Lunas</span>
+          <span class="hapus" onclick="hapusHutang(${index})">Hapus</span>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+function lunasiHutang(index) {
+  let dataHutang = hutang[index];
+
+  dataHutang.status = "Lunas";
+
+  transaksi.forEach(item => {
+    if (
+      item.keterangan.toLowerCase() === ("hutang - " + dataHutang.namaPelanggan).toLowerCase() &&
+      item.total === dataHutang.total
+    ) {
+      item.status = "Lunas";
+    }
+  });
+tambahLogAktivitas(
+  "fa-solid fa-wallet",
+  "log-blue",
+  "Hutang " + dataHutang.namaPelanggan + " dilunasi",
+  "Total " + dataHutang.total.toLocaleString("id-ID")
+);
+  simpanData();
+  tampilHutang();
+  tampilTransaksi();
+
+  tampilPopup("Berhasil!", "Hutang berhasil dilunasi.");
+}
+
+function hapusHutang(index) {
+  hutang.splice(index, 1);
+
+  simpanData();
+  tampilHutang();
+}
+function tambahTransaksi() {
+  document.getElementById("popupInputTransaksi").style.display = "flex";
+}
+function tampilTransaksi() {
+  let tabel = document.getElementById("tabelTransaksi");
+
+  if (transaksi.length === 0) {
+    tabel.innerHTML = `<tr><td colspan="5">Belum ada transaksi</td></tr>`;
+    return;
+  }
+
+  tabel.innerHTML = "";
+
+  transaksi.forEach((item, index) => {
+    tabel.innerHTML += `
+      <tr>
+        <td>${index + 1}.</td>
+        <td>${item.namaBarang}</td>
+        <td>IDR. ${item.total.toLocaleString("id-ID")}</td>
+        <td>${item.keterangan}</td>
+        <td>${item.status}</td>
+      </tr>
+    `;
+  });
+}
+
+tampilStok();
+tampilHutang();
+tampilTransaksi();
+</script>
+<script>
+function tampilPopup(judul, pesan) {
+  document.getElementById("popupTitle").innerText = judul;
+  document.getElementById("popupMessage").innerText = pesan;
+  document.getElementById("popupCustom").style.display = "flex";
+}
+
+function tutupPopup() {
+  document.getElementById("popupCustom").style.display = "none";
+}
+
+function logout() {
+  localStorage.clear();
+  window.location.href = "index.html";
+}
+function bukaPopupLogout() {
+  document.getElementById("popupLogout").style.display = "flex";
+}
+
+function tutupPopupLogout() {
+  document.getElementById("popupLogout").style.display = "none";
+}
+
+function konfirmasiLogout() {
+  localStorage.clear();
+  window.location.href = "index.html";
+}
+</script>
+<div id="popupCustom" class="popup-overlay" style="display:none;">
+  <div class="popup-box">
+    <h3 id="popupTitle">Berhasil!</h3>
+    <p id="popupMessage">Data berhasil disimpan.</p>
+    <button onclick="tutupPopup()">OK</button>
+  </div>
+</div>
+<div id="popupInputBarang" class="popup-overlay" style="display:none;">
+  <div class="popup-box">
+    <h3>Tambah Stok Barang</h3>
+
+    <input type="text" id="kodeBarang" placeholder="Kode Barang (E01)">
+    <input type="text" id="namaBarang" placeholder="Nama Barang">
+    <input type="number" id="hargaBarang" placeholder="Harga per pcs">
+    <input type="number" id="jumlahBarang" placeholder="Jumlah Stok">
+    <input type="number" id="profitBarang" placeholder="Profit">
+
+    <button onclick="simpanStokBaru()">Simpan</button>
+    <button onclick="tutupInputBarang()">Batal</button>
+  </div>
+</div>
+<div id="popupInputTransaksi" class="popup-overlay" style="display:none;">
+  <div class="popup-box">
+    <h3>Tambah Transaksi</h3>
+
+    <input type="text" id="kodeTransaksi" placeholder="Kode Barang">
+    <input type="number" id="jumlahBeli" placeholder="Jumlah Beli">
+    <input type="text" id="metodeBayar" placeholder="Tunai / Hutang">
+    <input type="text" id="namaPelanggan" placeholder="Nama Pelanggan (isi jika hutang)">
+    <input type="date" id="jatuhTempo">
+
+    <button onclick="simpanTransaksiBaru()">Simpan</button>
+    <button onclick="tutupInputTransaksi()">Batal</button>
+  </div>
+</div>
+<div id="popupEditStok" class="popup-overlay" style="display:none;">
+  <div class="popup-box">
+    <h3>Edit Stok Barang</h3>
+
+    <input type="hidden" id="editKodeBarang">
+    <input type="number" id="editHargaBarang" placeholder="Harga baru">
+    <input type="number" id="editJumlahBarang" placeholder="Jumlah stok baru">
+    <input type="number" id="editProfitBarang" placeholder="Profit baru">
+
+    <button onclick="simpanEditStok()">Simpan</button>
+    <button onclick="tutupEditStok()">Batal</button>
+  </div>
+</div>
+
+<div id="popupHapusStok" class="popup-overlay" style="display:none;">
+  <div class="popup-box">
+    <h3>Hapus Stok</h3>
+    <p id="pesanHapusStok">Yakin mau hapus stok ini?</p>
+
+    <input type="hidden" id="hapusKodeBarang">
+
+    <button onclick="konfirmasiHapusStok()">Hapus</button>
+    <button onclick="tutupHapusStok()">Batal</button>
+  </div>
+</div>
+<div id="popupLogout" class="popup-overlay" style="display:none;">
+  <div class="popup-box">
+    <h3>Konfirmasi Keluar</h3>
+    <p>Yakin mau keluar dari aplikasi?</p>
+
+    <button onclick="konfirmasiLogout()">OK</button>
+    <button onclick="tutupPopupLogout()">Cancel</button>
+  </div>
+</div>
+</body>
+</html>

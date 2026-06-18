@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  **<meta name="viewport" content="width=device-width, initial-scale=1.0">**
+  <title>Dashboard MaduraSmart</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
+<div class="app">
+
+<aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-text"> <h1>Madura</h1>
+      </div>
+      <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    </div>
+    
+    <div class="menu active">🏠 Dashboard</div>
+    <a href="fitur.html" class="menu">📦 Fitur Utama</a>
+    <a href="laporan.html" class="menu">📊 Laporan / Output</a>
+    <a href="profil.html" class="menu">👤 Profil / Riwayat</a>
+    <a href="#" class="menu" onclick="bukaPopupLogout()">↪ Quit</a>
+  </aside>
+
+  <main class="main">
+    
+    <header class="topbar">
+      <div class="brand">
+        <img src="logo.jpeg" class="logo">
+        <div>
+          <h1>MaduraSmart</h1>
+          <p>Catatan Warung Lebih Rapih</p>
+        </div>
+      </div>
+
+      <a href="profil.html" class="user">
+  🔔 👨‍💼 <b id="namaUser"></b>
+</a>
+    </header>
+
+    <section class="cards">
+  <div class="info-card">
+    <h2 id="saldoPiutang">IDR. 0</h2>
+    <p>Saldo Piutang</p>
+  </div>
+
+  <div class="info-card">
+    <h2 id="totalTransaksi">IDR. 0</h2>
+    <p>Total Transaksi</p>
+  </div>
+
+  <div class="info-card red">
+    <h2 id="statusKasir">Belum Ada</h2>
+    <p>Status Kasir</p>
+  </div>
+
+  <div class="info-card">
+    <h2 id="alertStok">0 Stok</h2>
+    <p>Alert Stok</p>
+  </div>
+</section>
+
+    <section class="dashboard-content">
+      <div class="panel transaction">
+        <h2>Transaction</h2>
+        <p>• Aktivitas Hari Ini: <span id="aktivitasHariIni">0</span> Transaksi Berhasil</p>
+<p>• Hutang Jatuh Tempo: <span id="hutangJatuhTempo">0</span> Orang harus ditagih hari ini!</p>
+
+        <div class="action-btn">
+  <a href="fitur.html">Tambah Transaksi Baru</a>
+  <a href="fitur.html">Lihat Catatan Hutang</a>
+</div>
+
+        <div class="log-header">
+  <h3>Aktivitas Terkini</h3>
+  <a href="laporan.html" class="lihat-btn">Lihat Semua</a>
+</div>
+        <table>
+  <thead>
+    <tr>
+      <th>No</th>
+      <th>Nama Barang</th>
+      <th>Total</th>
+      <th>Keterangan</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody id="logAktivitas">
+    <tr>
+      <td colspan="5">Belum ada aktivitas</td>
+    </tr>
+  </tbody>
+</table>
+      </div>
+
+      <div class="panel chart-panel">
+        <h2>Penjualan Minggu Ini</h2>
+        <div class="chart" id="grafikPenjualan">
+</div>
+
+        <p class="small-text">Grafik berdasarkan 7 transaksi terakhir</p>
+<p class="small-text">Total transaksi: <span id="jumlahTransaksiGrafik">0</span></p>
+<p class="small-text">Pendapatan terakhir: <span id="pendapatanTerakhir">IDR. 0</span></p>
+      </div>
+    </section>
+  </main>
+</div>
+<script>
+let nama = localStorage.getItem("username");
+
+if (nama) {
+  document.getElementById("namaUser").innerText = nama;
+} else {
+  document.getElementById("namaUser").innerText = "Pengguna";
+}
+
+let transaksi = JSON.parse(localStorage.getItem("transaksi")) || [];
+
+let totalTransaksi = 0;
+let saldoPiutang = 0;
+
+transaksi.forEach(item => {
+  totalTransaksi += item.total;
+
+  if (
+    item.keterangan.toLowerCase().includes("hutang") &&
+    item.status === "Belum Lunas"
+  ) {
+    saldoPiutang += item.total;
+  }
+});
+
+document.getElementById("totalTransaksi").innerText = "IDR. " + totalTransaksi.toLocaleString("id-ID");
+document.getElementById("saldoPiutang").innerText = "IDR. " + saldoPiutang.toLocaleString("id-ID");
+
+if (transaksi.length > 0) {
+  document.getElementById("statusKasir").innerText = "Aktif";
+} else {
+  document.getElementById("statusKasir").innerText = "Belum Ada";
+}
+
+let stokBarang = JSON.parse(localStorage.getItem("stokBarang")) || [];
+
+let totalStok = 0;
+
+stokBarang.forEach(item => {
+  totalStok += item.jumlah;
+});
+
+document.getElementById("alertStok").innerText = totalStok + " Stok";
+document.getElementById("aktivitasHariIni").innerText = transaksi.length;
+let hutang = JSON.parse(localStorage.getItem("hutang")) || [];
+let hariIni = new Date().toISOString().slice(0, 10);
+
+let jumlahJatuhTempo = hutang.filter(item =>
+  item.tanggal === hariIni &&
+  item.status === "Belum Lunas"
+).length;
+
+document.getElementById("hutangJatuhTempo").innerText = jumlahJatuhTempo;
+let grafikPenjualan = document.getElementById("grafikPenjualan");
+
+let tinggiGrafik = transaksi.slice(-7).map(item => {
+  return Math.min(item.total / 1000, 130);
+});
+
+if (tinggiGrafik.length === 0) {
+  tinggiGrafik = [20, 20, 20, 20, 20, 20, 20];
+}
+
+grafikPenjualan.innerHTML = "";
+
+tinggiGrafik.forEach((tinggi, index) => {
+  let hari = ["Sen", "Sel", "Rab", "Kam", "Jum", "Sab", "Min"];
+
+grafikPenjualan.innerHTML += `
+  <div class="bar-container">
+
+    <div
+      class="bar"
+      style="height:${tinggi}px">
+    </div>
+
+    <span>${hari[index]}</span>
+
+  </div>
+`;
+});
+document.getElementById("jumlahTransaksiGrafik").innerText = transaksi.length;
+
+let terakhir = transaksi[transaksi.length - 1];
+
+document.getElementById("pendapatanTerakhir").innerText =
+  terakhir ? "IDR. " + terakhir.total.toLocaleString("id-ID") : "IDR. 0";
+let logAktivitas = document.getElementById("logAktivitas");
+
+if (transaksi.length === 0) {
+  logAktivitas.innerHTML = `
+    <tr>
+      <td colspan="5">Belum ada aktivitas</td>
+    </tr>
+  `;
+} else {
+  logAktivitas.innerHTML = "";
+
+  transaksi.forEach((item, index) => {
+    logAktivitas.innerHTML += `
+      <tr>
+        <td>${index + 1}.</td>
+        <td>${item.namaBarang}</td>
+        <td>Rp ${item.total.toLocaleString("id-ID")}</td>
+        <td>${item.keterangan}</td>
+        <td>${item.status}</td>
+      </tr>
+    `;
+  });
+}
+
+</script>
+<script>
+function logout() {
+  localStorage.clear();
+  window.location.href = "index.html";
+}
+function bukaPopupLogout() {
+  document.getElementById("popupLogout").style.display = "flex";
+}
+
+function tutupPopupLogout() {
+  document.getElementById("popupLogout").style.display = "none";
+}
+
+function konfirmasiLogout() {
+  localStorage.clear();
+  window.location.href = "index.html";
+}
+</script>
+<div id="popupLogout" class="popup-overlay" style="display:none;">
+  <div class="popup-box">
+    <h3>Konfirmasi Keluar</h3>
+    <p>Yakin mau keluar dari aplikasi?</p>
+
+    <button onclick="konfirmasiLogout()">OK</button>
+    <button onclick="tutupPopupLogout()">Cancel</button>
+  </div>
+</div>
+<script>
+function toggleMenu() {
+  document.querySelector(".sidebar").classList.toggle("active");
+}
+</script>
+</body>
+</html>
