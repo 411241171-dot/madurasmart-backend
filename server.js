@@ -49,10 +49,10 @@ app.post("/api/register", async (req, res) => {
     const { username, password } = req.body;
 
     if (!username || !password) {
-      return res.status(400).json({
-        success: false,
-        message: "Username dan password wajib diisi!",
-      });
+      return res.status(500).json({
+  success: false,
+  message: "ERROR LOGIN: " + error.message,
+});
     }
 
     const userAda = await User.findOne({ username });
