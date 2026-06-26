@@ -1,18 +1,20 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Stella Aesta', Arial, sans-serif;
-}
 @font-face {
     font-family: 'Stella Aesta';
-    src: url('fonts/Stella Aesta.otf') format('opentype');
+    src: url('Stella Aesta Italic DEMO.otf') format('opentype');
     font-weight: normal;
-    font-style: normal;
+    font-style: italic;
 }
-body {
-  background: #f8f5f5;
-  color: #111;
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Stella Aesta', Arial, sans-serif;
+}
+
+body{
+    background: #f8f5f5;
+    color: #111;
 }
 
 a {
