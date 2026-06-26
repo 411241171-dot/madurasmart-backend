@@ -2,9 +2,14 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
+  font-family: 'Stella Aesta', Arial, sans-serif;
 }
-
+@font-face {
+    font-family: 'Stella Aesta';
+    src: url('fonts/Stella Aesta.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
 body {
   background: #f8f5f5;
   color: #111;
@@ -158,7 +163,7 @@ a {
 /* LOGIN */
 
 .login-body {
-  background: #ed5757;
+  background: #70020F;
   height: 100vh;
   color: white;
 }
