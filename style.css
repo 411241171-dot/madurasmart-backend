@@ -1,15 +1,10 @@
-@font-face {
-    font-family: 'Stella Aesta';
-    src: url('Stella Aesta Italic DEMO.otf') format('opentype');
-    font-weight: normal;
-    font-style: italic;
-}
+
 
 *{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Stella Aesta', Arial, sans-serif;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Montserrat', sans-serif;
 }
 
 body{
@@ -51,13 +46,19 @@ a {
   object-fit: cover;
 }
 
-.brand h1 {
-  font-size: 28px;
+.brand h1{
+    font-family:'Montserrat', serif;
+    font-size:42px;
+    font-weight:normal;
+    color:#9c1b2a;
+    letter-spacing:1px;
 }
 
-.brand p {
-  font-size: 13px;
-  font-weight: bold;
+.brand p{
+    font-size:13px;
+    color:#666;
+    font-weight:500;
+    letter-spacing:.5px;
 }
 
 .nav-btn a {
@@ -68,10 +69,24 @@ a {
   margin-left: 10px;
 }
 
-.nav-btn .filled,
-.hero-btn .filled {
-  background: #f3272f;
-  color: white;
+.hero-btn .filled,
+.nav-btn .filled{
+    background:#9c1b2a;
+    color:#fff;
+    border:none;
+}
+
+.hero-btn a,
+.nav-btn a{
+    border:2px solid #9c1b2a;
+    color:#9c1b2a;
+    transition:.3s;
+}
+
+.hero-btn a:hover,
+.nav-btn a:hover{
+    background:#9c1b2a;
+    color:white;
 }
 
 .hero {
@@ -89,19 +104,22 @@ a {
   z-index: 2;
 }
 
-.hero-text h2 {
-  font-size: 30px;
-  line-height: 1.2;
+.hero-text h2{
+    font-size:48px;
+    font-weight:700;
+    line-height:1.25;
+    color:#222;
 }
 
-.hero-text span {
-  color: #f3272f;
+.hero-text span{
+    color:#9c1b2a;
 }
 
-.hero-text p {
-  margin-top: 20px;
-  font-size: 18px;
-  font-weight: bold;
+.hero-text p{
+    font-size:18px;
+    color:#666;
+    font-weight:400;
+    line-height:1.8;
 }
 
 .hero-btn {
@@ -127,8 +145,10 @@ a {
   text-align: center;
 }
 
-.fitur-section h2 {
-  margin-bottom: 35px;
+.fitur-section h2{
+    font-size:36px;
+    font-weight:700;
+    color:#222;
 }
 
 .fitur-grid {
@@ -148,18 +168,16 @@ a {
   box-shadow: 0 10px 18px rgba(0,0,0,0.15);
 }
 
-.fitur-card h3 {
-  color: #f3272f;
-  margin-bottom: 15px;
-  font-size: 20px;
-  line-height: 1.3;
+.fitur-card h3{
+    color:#9c1b2a;
+    font-size:22px;
+    font-weight:700;
 }
 
-.fitur-card p {
-  font-size: 15px;
-  font-weight: normal;
-  line-height: 1.6;
-  color: #444;
+.fitur-card p{
+    color:#666;
+    font-size:15px;
+    line-height:1.7;
 }
 
 /* LOGIN */
@@ -208,20 +226,40 @@ a {
 }
 
 .login-button-group {
-  display: flex;
-  justify-content: space-between;
   margin-top: 40px;
 }
 
 .login-button-group a {
-  width: 300px;
+  display: block;
+  width: 430px;
+  margin: 0 auto;
   text-align: center;
   padding: 16px;
-  background: #5b1d14;
+  background: #9c1b2a;
   color: white;
   border-radius: 30px;
   font-size: 22px;
   font-weight: bold;
+  text-decoration: none;
+}
+
+.register-text{
+    margin-top:18px;
+    text-align:center;
+    font-size:15px;
+    color:#666;
+    font-weight:400;
+}
+
+.register-text a{
+    color:#9c1b2a;
+    font-weight:600;
+    text-decoration:none;
+    margin-left:4px;
+}
+
+.register-text a:hover{
+    text-decoration:underline;
 }
 
 /* APP LAYOUT */
@@ -234,7 +272,7 @@ a {
 
 .sidebar {
   width: 225px;
-  background: #f3272f;
+  background: #9c1b2a;
   padding-top: 115px;
   border-radius: 0 35px 35px 0;
 }
@@ -283,7 +321,7 @@ a {
 }
 
 .info-card.red {
-  background: #f3272f;
+  background: #f4e7af;
 }
 
 .info-card h2 {
@@ -308,7 +346,7 @@ a {
 }
 
 .panel h2 {
-  color: #f3272f;
+  color: #9c1b2a;
   margin-bottom: 25px;
 }
 
@@ -324,8 +362,8 @@ a {
 
 .action-btn a,
 .table-action button {
-  background: #f26b70;
-  color: #111;
+  background: #9c1b2a;
+  color: #fff;
   padding: 12px 25px;
   border-radius: 25px;
   border: none;
@@ -395,8 +433,8 @@ td:last-child {
 
 .table-action button {
   width: 160px;
-  background: #f3272f;
-  color: black;
+  background: #9c1b2a;
+  color: #fff;
   font-weight: bold;
 }
 
@@ -466,7 +504,7 @@ td:last-child {
 }
 
 .filter-buttons .active-btn {
-  background: #d90000;
+  background: #f3272f;
   color: white;
   border: none;
 }
@@ -599,7 +637,16 @@ tbody tr:hover {
 }
 
 /* PAGINATION */
+.table-responsive{
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+}
 
+.table-responsive table{
+  min-width: 700px;
+  border-collapse: collapse;
+}
 .pagination {
   display: flex;
   justify-content: center;
@@ -980,7 +1027,7 @@ button:hover {
 }
 
 .warning-text {
-  color: #ffd5d5;
+  color: #9c1b2a;
   text-align: center;
   margin-top: 15px;
   font-size: 14px;
@@ -1057,7 +1104,6 @@ button:hover {
 
   .table-section table {
     width: 100%;
-    min-width: unset;
   }
 
   .table-section th,
@@ -1408,7 +1454,7 @@ button:hover {
 
 
 .warning-text{
-  color:red;
+  color:#9c1b2a;
   font-size:13px;
   margin-top:10px;
   margin-bottom:15px;
@@ -1464,3 +1510,242 @@ button:hover {
     width: 100%;
   }
 }
+.sidebar {
+  transition: all 0.3s ease;
+}
+
+.sidebar.close {
+  margin-left: -110px;
+}
+.main {
+  transition: all 0.3s ease;
+}
+
+@media (max-width:768px){
+
+  .fitur-table{
+    overflow:hidden;
+  }
+
+  .table-responsive{
+    width:100%;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  .table-responsive table{
+    min-width:800px;
+  }
+
+  .table-responsive::-webkit-scrollbar{
+    height:6px;
+  }
+
+  .table-responsive::-webkit-scrollbar-thumb{
+    background:#9c1b2a;
+    border-radius:10px;
+  }
+}
+/* =========================================
+   MENAMPILKAN TOMBOL HAMBURGER DI TOPBAR
+========================================= */
+
+/* 1. Pastikan Topbar sejajar (Hamburger + Logo) */
+.topbar {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  padding: 15px 20px;
+  background-color: #ffffff; /* Pastikan background putih */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Opsional: kasih bayangan tipis */
+}
+
+/* 2. Styling Tombol Hamburger agar masuk dan terlihat */
+.menu-toggle {
+  display: block !important; /* Paksa tombol muncul, hilangkan efek hidden */
+  font-size: 32px !important; /* Ukuran icon */
+  cursor: pointer;
+  color: #9c1b2a !important; /* Warna merah gelap khas tema kamu */
+  margin-right: 20px; /* Kasih jarak antara tombol dan logo M-SMART */
+  font-weight: bold;
+}
+
+/* ===================================================
+   PAKSA HAMBURGER MUNCUL DI DALAM SIDEBAR (WARNA MERAH)
+   =================================================== */
+/* ===================================================
+   TRIK BIAR TOMBOL HAMBURGER TETAP KELIHATAN DI HP
+   =================================================== */
+
+@media (max-width: 768px) {
+  /* Paksa tombol hamburger di dalam sidebar untuk selalu aktif */
+  .sidebar .menu-toggle {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    font-size: 30px !important;
+    cursor: pointer !important;
+    z-index: 99999 !important; /* Biar selalu di depan tidak tertutup konten */
+  }
+
+  /* KONDISI 1: Pas sidebar lagi NUTUP / NGUMPET di HP */
+  /* Kita paksa tombolnya kabur keluar melayang di pojok layar putih */
+  .sidebar:not(.open) .menu-toggle {
+    position: fixed !important;
+    top: 12px;
+    left: 15px;
+    color: #9c1b2a !important; /* Warna merah biar kelihatan jelas di layar putih */
+  }
+
+  /* KONDISI 2: Pas sidebar lagi TERBUKA (.open) di HP */
+  /* Tombolnya otomatis masuk lagi ke dalam kotak merah di sebelah tulisan "Madura" */
+  .sidebar.open .menu-toggle {
+    position: static !important; /* Balik ke posisi flexbox normal */
+    color: #ffffff !important; /* Berubah jadi putih biar kontras di background merah */
+  }
+
+  /* Memastikan flexbox di bagian brand sidebar rapi di HP */
+  .sidebar-brand {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+    padding: 20px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* ===================================================
+   PENGATURAN HAMBURGER & SIDEBAR (ANTI-GAGAL HP & PC)
+   =================================================== */
+
+/* --- Tampilan Default (Laptop / Desktop) --- */
+.open-btn {
+  display: none !important; /* Di laptop, tombol buka disembunyikan */
+}
+.close-btn {
+  display: none !important; /* Di laptop, tombol tutup juga disembunyikan */
+}
+
+/* --- Tampilan Khusus HP (Responsive Mode) --- */
+@media (max-width: 768px) {
+  /* 1. Tombol Buka di Topbar (Warna Merah biar kontras di area putih) */
+  .open-btn {
+    display: block !important;
+    font-size: 28px !important;
+    cursor: pointer !important;
+    color: #9c1b2a !important;
+    margin-right: 15px;
+  }
+
+  /* 2. Tombol Tutup di Sidebar (Warna Putih biar kontras di area merah) */
+  .close-btn {
+    display: block !important;
+    font-size: 28px !important;
+    cursor: pointer !important;
+    color: #ffffff !important;
+  }
+
+  /* 3. Setup awal Sidebar pas di HP (Wajib Ngumpet di kiri layar) */
+  .sidebar {
+    position: fixed !important;
+    top: 0;
+    left: -260px !important; /* Sembunyi total ke kiri luar layar */
+    width: 250px !important;
+    height: 100vh !important;
+    z-index: 99999 !important; /* Naikkan layer ke paling depan biar bisa dipencet */
+    transition: left 0.3s ease-in-out !important; /* Animasi geser mulus */
+    margin: 0 !important;
+  }
+
+  /* 4. KUNCI UTAMA: Pas diklik, JavaScript nambahin class 'open', sidebar langsung maju */
+  .sidebar.open {
+    left: 0 !important; 
+  }
+
+  /* Rapikan posisi tulisan Madura & tombol close di dalam sidebar */
+  .sidebar-brand {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 15px 20px !important;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+}
+/* 1. Atur kotak pembungkusnya biar tulisan Madura & Hamburger sejajar kiri-kanan */
+.sidebar-brand {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 20px !important;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 2. Paksa tombol hamburger di dalam sidebar untuk MUNJUL dan berwarna PUTIH */
+.sidebar .menu-toggle {
+  display: block !important;    /* Anti-ngumpet, mau di PC atau HP tetep muncul */
+  color: #ffffff !important;    /* Warna putih biar kontras di atas background merah */
+  font-size: 28px !important;   /* Ukuran pas */
+  cursor: pointer !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* ===================================================
+   PENGATURAN HAMBURGER & SIDEBAR (ANTI-GAGAL HP & PC)
+   =================================================== */
+
+/* --- Tampilan Default (Laptop / Desktop) --- */
+.open-btn {
+  display: none !important; /* Di laptop, tombol buka disembunyikan */
+}
+.close-btn {
+  display: none !important; /* Di laptop, tombol tutup juga disembunyikan */
+}
+
+
+  /* 1. Tombol Buka di Topbar (Warna Merah biar kontras di area putih) */
+  .open-btn {
+    display: block !important;
+    font-size: 28px !important;
+    cursor: pointer !important;
+    color: #9c1b2a !important;
+    margin-right: 15px;
+  }
+
+  /* 2. Tombol Tutup di Sidebar (Warna Putih biar kontras di area merah) */
+  .close-btn {
+    display: block !important;
+    font-size: 28px !important;
+    cursor: pointer !important;
+    color: #ffffff !important;
+  }
+
+  /* 3. Setup awal Sidebar pas di HP (Wajib Ngumpet di kiri layar) */
+  .sidebar {
+    position: fixed !important;
+    top: 0;
+    left: -260px !important; /* Sembunyi total ke kiri luar layar */
+    width: 250px !important;
+    height: 100vh !important;
+    z-index: 99999 !important; /* Naikkan layer ke paling depan biar bisa dipencet */
+    transition: left 0.3s ease-in-out !important; /* Animasi geser mulus */
+    margin: 0 !important;
+  }
+
+  /* 4. KUNCI UTAMA: Pas diklik, JavaScript nambahin class 'open', sidebar langsung maju */
+  .sidebar.open {
+    left: 0 !important; 
+  }
+
+  /* Rapikan posisi tulisan Madura & tombol close di dalam sidebar */
+  .sidebar-brand {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 15px 20px !important;
+    width: 100%;
+    box-sizing: border-box;
+  }
