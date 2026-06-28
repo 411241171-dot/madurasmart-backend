@@ -2,32 +2,36 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  **<meta name="viewport" content="width=device-width, initial-scale=1.0">**
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard MaduraSmart</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 
 <div class="app">
 
-<aside class="sidebar">
+<aside class="sidebar" id="sidebar">
     <div class="sidebar-brand">
-      <div class="brand-text"> <h1>Madura</h1>
-      </div>
-      <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+      
+      <div class="menu-toggle" onclick="toggleMenu()">☰</div>
     </div>
-    
-    <div class="menu active">🏠 Dashboard</div>
-    <a href="fitur.html" class="menu">📦 Fitur Utama</a>
-    <a href="laporan.html" class="menu">📊 Laporan / Output</a>
-    <a href="profil.html" class="menu">👤 Profil / Riwayat</a>
+
+    <div class="menu active">Dashboard</div>
+    <a href="fitur.html" class="menu">Fitur Utama</a>
+    <a href="laporan.html" class="menu">Laporan / Output</a>
+    <a href="profil.html" class="menu">Profil / Riwayat</a>
     <a href="#" class="menu" onclick="bukaPopupLogout()">↪ Quit</a>
-  </aside>
+</aside>
 
   <main class="main">
     
     <header class="topbar">
+      <div class="menu-toggle open-btn" onclick="toggleMenu()">☰</div>
       <div class="brand">
         <img src="logo.jpeg" class="logo">
         <div>
@@ -249,7 +253,7 @@ function konfirmasiLogout() {
 </div>
 <script>
 function toggleMenu() {
-  document.querySelector(".sidebar").classList.toggle("active");
+  document.getElementById("sidebar").classList.toggle("open");
 }
 </script>
 </body>

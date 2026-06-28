@@ -3,7 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login MaduraSmart</title>
+  <title>Register MaduraSmart</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="login-body">
@@ -20,16 +26,20 @@
   <h2>Registrasi Akun Baru</h2>
 
   <label>Buat Username / Nomor HP</label>
-  <input type="text" id="reg_username" placeholder="Masukkan nama warung baru . . .">
+  <input type="text" id="reg_username" placeholder="Masukkan nama warung baru">
 
   <label>Buat Password</label>
-  <input type="password" id="reg_password" placeholder="Masukkan password . . .">
+  <input type="password" id="reg_password" placeholder="Masukkan password">
   <p id="warningText" class="warning-text"></p>
   
-  <div class="login-button-group">
-    <a href="#" onclick="register()">Daftar Sekarang</a>
-    <a href="login.html">Sudah Ada Akun? Login</a>
-  </div>
+<div class="login-button-group">
+  <a href="#" onclick="register()">Daftar Sekarang</a>
+</div>
+
+<p class="register-text">
+  Sudah punya akun?
+  <a href="login.html">Login</a>
+</p>
 </div>
 
 <script>

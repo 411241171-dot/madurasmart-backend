@@ -2,7 +2,12 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fitur Utama MaduraSmart</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -10,10 +15,10 @@
 <div class="app">
 
   <aside class="sidebar">
-    <a href="dashboard.html" class="menu">🏠 Dashboard</a>
-    <div class="menu active">📦 Fitur Utama</div>
-    <a href="laporan.html" class="menu">📊 Laporan / Output</a>
-    <a href="profil.html" class="menu">👤 Profil / Riwayat</a>
+    <a href="dashboard.html" class="menu">Dashboard</a>
+    <div class="menu active">Fitur Utama</div>
+    <a href="laporan.html" class="menu">Laporan / Output</a>
+    <a href="profil.html" class="menu">Profil / Riwayat</a>
     <a href="#" class="menu" onclick="bukaPopupLogout()">↪ Quit</a>
   </aside>
 
@@ -36,10 +41,10 @@
       <h2>Stok barang</h2>
 
       <div class="table-action">
-        <button onclick="tambahStok()">✎ New Stock</button>
-        <input type="text" id="searchStok" onkeyup="tampilStok()" placeholder="🔍 Search Item">
+        <button onclick="tambahStok()">New Stock</button>
+        <input type="text" id="searchStok" onkeyup="tampilStok()" placeholder="Search Item">
       </div>
-
+<div class="table-responsive">
       <table>
         <thead>
           <tr>
@@ -60,45 +65,50 @@
           </tr>
         </tbody>
       </table>
-
+    </div>
       <div class="page-btn">‹ 1 ›</div>
     </section>
 
     <section class="panel fitur-table">
-      <h2>Catatan Hutang</h2>
+  <h2>Catatan Hutang</h2>
 
-      <div class="table-action">
-        <input type="text" id="searchHutang" onkeyup="tampilHutang()" placeholder="🔍 Search Item">
-      </div>
+  <div class="table-action">
+    <input type="text"
+           id="searchHutang"
+           onkeyup="tampilHutang()"
+           placeholder="Search Item">
+  </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th>No</th>
-            <th>Jatuh Tempo</th>
-            <th>Nama Pelanggan</th>
-            <th>Total</th>
-            <th>Status</th>
-            <th>Option</th>
-          </tr>
-        </thead>
+  <div class="table-responsive">
+    <table>
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Jatuh Tempo</th>
+          <th>Nama Pelanggan</th>
+          <th>Total</th>
+          <th>Status</th>
+          <th>Option</th>
+        </tr>
+      </thead>
 
-        <tbody id="tabelHutang">
-          <tr>
-            <td colspan="6">Belum ada catatan hutang</td>
-          </tr>
-        </tbody>
-      </table>
+      <tbody id="tabelHutang">
+        <tr>
+          <td colspan="6">Belum ada catatan hutang</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-      <div class="page-btn">‹ 1 ›</div>
-    </section>
+  <div class="page-btn">‹ 1 ›</div>
+</section>
 <section class="panel fitur-table">
   <h2>Transaksi Penjualan</h2>
 
   <div class="table-action">
-    <button onclick="tambahTransaksi()">✎ New Transaction</button>
+    <button onclick="tambahTransaksi()">New Transaction</button>
   </div>
-
+<div class="table-responsive">
   <table>
     <thead>
       <tr>
@@ -116,7 +126,7 @@
       </tr>
     </tbody>
   </table>
-
+</div>
   <div class="page-btn">‹ 1 ›</div>
 </section>
   </main>
