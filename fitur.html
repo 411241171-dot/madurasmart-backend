@@ -145,6 +145,22 @@ function simpanData() {
   localStorage.setItem("transaksi", JSON.stringify(transaksi));
   localStorage.setItem("hutang", JSON.stringify(hutang));
 }
+async function loadStok() {
+  try {
+    const username = localStorage.getItem("username");
+
+    if (!username) return;
+
+    const response = await fetch(
+      `https://madurasmart-backend.vercel.app/api/stok/${username}`
+    );
+
+    stokBarang = await response.json();
+    tampilStok();
+  } catch (error) {
+    console.error("Gagal load stok:", error);
+  }
+}
 let riwayatAktivitas =
   JSON.parse(localStorage.getItem("riwayatAktivitas")) || [];
 
@@ -521,7 +537,7 @@ function tampilTransaksi() {
   });
 }
 
-tampilStok();
+loadStok();
 tampilHutang();
 tampilTransaksi();
 </script>
