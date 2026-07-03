@@ -1,0 +1,125 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Montserrat',sans-serif;
+}
+
+body{
+  min-height:100vh;
+  background:#f4f4f4;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.auth-container{
+  width:100%;
+  padding:20px;
+}
+
+.auth-card{
+  width:100%;
+  max-width:450px;
+
+  background:#fff;
+
+  padding:45px;
+
+  margin:auto;
+
+  border-radius:25px;
+
+  box-shadow:
+  0 15px 40px rgba(0,0,0,.1);
+}
+
+.logo-box{
+  text-align:center;
+  margin-bottom:35px;
+}
+
+#logo{
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  object-fit:cover;
+  background:#eee;
+  margin-bottom:20px;
+}
+
+.logo-box h1{
+  color:#b11217;
+  font-size:38px;
+  font-weight:700;
+}
+
+.logo-box p{
+  color:#666;
+  margin-top:8px;
+}
+
+h2{
+  text-align:center;
+  margin-bottom:30px;
+  color:#1f1f1f;
+}
+
+.input-group{
+  margin-bottom:20px;
+}
+
+.input-group label{
+  display:block;
+  margin-bottom:8px;
+  font-weight:500;
+}
+
+.input-group input{
+  width:100%;
+  height:55px;
+
+  border:1px solid #ddd;
+
+  border-radius:15px;
+
+  padding:0 18px;
+  font-size:15px;
+}
+
+.input-group input:focus{
+  outline:none;
+  border:1px solid #b11217;
+}
+
+button{
+  width:100%;
+  height:55px;
+
+  background:#b11217;
+  color:white;
+
+  border:none;
+  border-radius:15px;
+
+  font-size:16px;
+  font-weight:600;
+
+  cursor:pointer;
+}
+
+button:hover{
+  opacity:.9;
+}
+
+.bottom-text{
+  margin-top:25px;
+  text-align:center;
+}
+
+.bottom-text a{
+  color:#b11217;
+  text-decoration:none;
+  font-weight:600;
+}

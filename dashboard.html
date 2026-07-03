@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | MaduraSmart</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/dashboard.css">
+
+  <link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+
+  <div class="logo-box">
+
+    <!-- Ganti src nanti -->
+    <img src="logo.jpeg" id="logo">
+
+    <h2>MaduraSmart</h2>
+    <p>Catatan Warung Lebih Rapih</p>
+
+  </div>
+
+  <a href="dashboard.html" class="menu active">
+    <i class="fa-solid fa-house"></i>
+    Dashboard
+  </a>
+
+  <a href="fitur.html" class="menu">
+    <i class="fa-solid fa-cube"></i>
+    Fitur Utama
+  </a>
+
+  <a href="laporan.html" class="menu">
+    <i class="fa-solid fa-file-lines"></i>
+    Laporan
+  </a>
+
+  <a href="profil.html" class="menu">
+    <i class="fa-solid fa-user"></i>
+    Profil
+  </a>
+
+  <a href="#" onclick="logout()" class="menu logout">
+    <i class="fa-solid fa-right-from-bracket"></i>
+    Logout
+  </a>
+
+</div>
+
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- NAVBAR -->
+  <div class="navbar">
+
+    <div class="left">
+
+      <i class="fa-solid fa-bars menu-btn"
+      onclick="toggleSidebar()"></i>
+
+      <h1>MaduraSmart</h1>
+
+      <i class="fa-solid fa-bell notif"></i>
+
+    </div>
+
+    <div class="right">
+
+      <i class="fa-solid fa-user"></i>
+
+      <span id="namaUser"></span>
+
+    </div>
+
+  </div>
+
+
+  <!-- CARD -->
+  <div class="cards">
+
+    <div class="card">
+      <h3>Saldo Piutang</h3>
+      <h1 id="saldoPiutang">
+        IDR. 0
+      </h1>
+    </div>
+
+    <div class="card">
+      <h3>Total Transaksi</h3>
+      <h1 id="totalTransaksi">
+        IDR. 0
+      </h1>
+    </div>
+
+    <div class="card warning">
+      <h3>Status Kasir</h3>
+      <h1 id="statusKasir">
+        Belum Ada
+      </h1>
+    </div>
+
+    <div class="card">
+      <h3>Alert Stok</h3>
+      <h1 id="alertStok">
+        0 Stok
+      </h1>
+    </div>
+
+  </div>
+
+
+  <!-- INFO + CHART -->
+  <div class="grid">
+
+    <!-- INFO -->
+    <div class="info-box">
+
+      <h2>
+        <i class="fa-solid fa-bell"></i>
+        Informasi Penting
+      </h2>
+
+      <p id="aktivitasHariIni">
+        • Aktivitas Hari Ini:
+        0 Transaksi Berhasil
+      </p>
+
+      <p id="hutangTempo">
+        • Hutang Jatuh Tempo:
+        0 Orang harus ditagih hari ini
+      </p>
+
+      <p id="stokMenipis">
+        • Stok Menipis:
+        0 Barang perlu ditambah
+      </p>
+
+      <div class="btn-group">
+
+        <a href="fitur.html" class="btn">
+          Tambah Transaksi Baru
+        </a>
+
+        <a href="fitur.html#hutang" class="btn-outline">
+          Lihat Catatan Hutang
+        </a>
+
+      </div>
+
+    </div>
+
+
+    <!-- CHART -->
+    <div class="chart-box">
+
+      <h2>Penjualan Minggu Ini</h2>
+
+      <canvas id="chartPenjualan"></canvas>
+
+      <div class="chart-info">
+
+        <div>
+          Total Transaksi:
+          <span id="jumlahTransaksi">
+            0
+          </span>
+        </div>
+
+        <div>
+          Pendapatan:
+          <span id="pendapatan">
+            IDR.0
+          </span>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- AKTIVITAS -->
+  <div class="activity">
+
+    <div class="table-header">
+
+      <h2>Aktivitas Terkini</h2>
+
+      <button>
+        Lihat Semua
+      </button>
+
+    </div>
+
+    <table>
+
+      <thead>
+
+      <tr>
+        <th>No</th>
+        <th>Nama Barang</th>
+        <th>Total</th>
+        <th>Keterangan</th>
+        <th>Status</th>
+      </tr>
+
+      </thead>
+
+      <tbody id="aktivitasBody">
+
+      <tr>
+        <td colspan="5">
+          Belum ada aktivitas
+        </td>
+      </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
+
+<script src="js/dashboard.js"></script>
+
+</body>
+</html>
